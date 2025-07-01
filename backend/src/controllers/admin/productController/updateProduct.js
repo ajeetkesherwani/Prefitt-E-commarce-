@@ -38,7 +38,7 @@ exports.updateProduct = catchAsync(async (req, res) => {
       discountedPrice,
       returnAvailable,
       exchangeAvailable,
-      variants,
+      // variants,
       shortDiscription,
       longDiscription,
       tags,
@@ -51,7 +51,7 @@ exports.updateProduct = catchAsync(async (req, res) => {
         message: "Product not found",
       });
     }
-
+    // let variants = [];
     product.vendor = vendor || product.vendor;
     product.serviceId = serviceId || product.serviceId;
     product.categoryId = categoryId || product.categoryId;
@@ -65,7 +65,7 @@ exports.updateProduct = catchAsync(async (req, res) => {
     product.shortDiscription = shortDiscription || product.shortDiscription;
     product.longDiscription = longDiscription || product.longDiscription;
     product.tags = tags ? JSON.parse(tags) : product.tags;
-    product.variants = variants ? JSON.parse(variants) : product.variants;
+    // product.variants = variants ? JSON.parse(variants) : product.variants;
 
     if (req.files && req.files.primary_image) {
       const url = `${req.files.primary_image[0].destination}/${req.files.primary_image[0].filename}`;

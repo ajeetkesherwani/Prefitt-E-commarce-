@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const vendorSchema = new mongoose.Schema({
   // SHOP DETAILS
   shopName: { type: String },
-  shopId: { type: String, unique: true },
+  shopId: { type: String, default: "" },
   serviceId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Service",

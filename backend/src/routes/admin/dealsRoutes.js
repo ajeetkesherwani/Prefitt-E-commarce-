@@ -9,6 +9,9 @@ const {
   getDealsOfTheDay,
 } = require("../../controllers/admin/dealsOfTheDayController/getDealsOfTheDay");
 const {
+  getDealsOfTheDayById,
+} = require("../../controllers/admin/dealsOfTheDayController/getDealsOfTheDayById");
+const {
   createDealsOfTheDay,
 } = require("../../controllers/admin/dealsOfTheDayController/createDealsOfTheDay");
 
@@ -27,6 +30,7 @@ router.post(
   fileUploader("dealsOfTheDay", [{ name: "image", maxCount: 1 }]),
   createDealsOfTheDay
 );
+router.get("/getDataById/:id", adminAuthenticate, getDealsOfTheDayById);
 router.patch(
   "/update/:id",
   adminAuthenticate,

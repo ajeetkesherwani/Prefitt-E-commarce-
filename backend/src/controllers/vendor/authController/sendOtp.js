@@ -2,24 +2,36 @@ const Vendor = require("../../../models/vendor");
 const AppError = require("../../../utils/AppError");
 const catchAsync = require("../../../utils/catchAsync");
 
+function generateShopId(shopName) {
+  const shopPrefix = shopName.slice(0, 5).toUpperCase().padEnd(5, "A");
+  const randomDigits = Math.floor(10000 + Math.random() * 90000);
+  const shopId = `${shopPrefix}${randomDigits}`;
+
+  return shopId;
+}
+
 exports.sendOtp = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   let { mobile } = req.body;
   if (!mobile) return next(new AppError("mobile field are required.", 400));
 
-  const vendor = await Vendor.findOne({ mobile });
+  const otp = "1234"; // You can replace with random OTP logic
+  const otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes from now
 
-  if (!vendor.status)
-    return next(
-      new AppError("You are not verified. Wait for verification", 403)
-    );
-
-  if (vendor.isBlocked) return next(new AppError("You are blocked", 403));
-
-  //   const otp = Math.floor(1000 + Math.random() * 9000).toString();
-  const otp = "1234";
-  vendor.otp = otp;
-  vendor.otpExpires = Date.now() + 10 * 60 * 1000;
-  await vendor.save();
+  let vendor = await Vendor.findOne({ mobile });
+  shopId = generateShopId("PreNewShop");
+  if (vendor) {
+    vendor.otp = otp;
+    vendor.otpExpires = otpExpires;
+    await vendor.save();
+  } else {
+    vendor = await Vendor.create({
+      mobile,
+      shopId,
+      otp,
+      otpExpires,
+    });
+  }
 
   // await sendSms(vendor.mobile, `Your OTP is ${otp}`);
 

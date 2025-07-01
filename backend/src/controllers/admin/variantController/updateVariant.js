@@ -14,7 +14,7 @@ exports.updateVariant = async (req, res) => {
         .status(400)
         .json({ success: false, message: "variants not found" });
 
-    const { variantName } = req.body;
+    const { variantName, serviceId } = req.body;
     if (!variantName) {
       return res
         .status(400)
@@ -22,16 +22,15 @@ exports.updateVariant = async (req, res) => {
     }
 
     updatedVariants.variantName = variantName || updatedVariants.variantName;
+    updatedVariants.serviceId = serviceId || updatedVariants.serviceId;
 
     await updatedVariants.save();
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "variant updated successfully",
-        data: updatedVariants,
-      });
+    res.status(200).json({
+      success: true,
+      message: "variant updated successfully",
+      data: updatedVariants,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

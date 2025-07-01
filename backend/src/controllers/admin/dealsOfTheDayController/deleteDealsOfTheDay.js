@@ -1,13 +1,6 @@
 const DealsOfTheDay = require("../../../models/dealsOfTheDay");
 const AppError = require("../../../utils/AppError");
 const catchAsync = require("../../../utils/catchAsync");
-const deleteOldFiles = require("../../../utils/deleteOldFiles");
-
-const validateRequiredField = (field, fieldName) => {
-  if (!field || !field.trim())
-    return new AppError(`${fieldName} is required.`, 400);
-  return null;
-};
 
 exports.deleteDealsOfTheDay = catchAsync(async (req, res) => {
   let id = req.params.id;

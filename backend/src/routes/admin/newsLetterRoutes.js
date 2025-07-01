@@ -6,6 +6,9 @@ const {
   getNewsLetter,
 } = require("../../controllers/admin/newaLetterController/getNewsLetter");
 const {
+  getNewsLetterById,
+} = require("../../controllers/admin/newaLetterController/getNewsLetterById");
+const {
   deleteNewsLetter,
 } = require("../../controllers/admin/newaLetterController/deleteNewsLetter");
 const {
@@ -16,6 +19,7 @@ const router = express.Router();
 
 router.get("/list", getNewsLetter);
 router.post("/create", createNewsLetter);
+router.get("/getById/:id", getNewsLetterById);
 router.patch("/update/:id", updateNewsLetter);
 router.delete("/delete/:id", deleteNewsLetter);
 

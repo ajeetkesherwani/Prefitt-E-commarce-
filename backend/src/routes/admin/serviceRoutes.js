@@ -18,6 +18,9 @@ const {
   detailService,
 } = require("../../controllers/admin/serviceController/detailService");
 const {
+  getDataById,
+} = require("../../controllers/admin/serviceController/getDataById");
+const {
   updateService,
 } = require("../../controllers/admin/serviceController/updateService");
 
@@ -28,6 +31,7 @@ router.post(
   adminAuthenticate,
   createService
 );
+router.get("/getDataById/:id", adminAuthenticate, getDataById);
 router.patch(
   "/update/:id",
   fileUploader("service", [{ name: "image", maxCount: 1 }]),

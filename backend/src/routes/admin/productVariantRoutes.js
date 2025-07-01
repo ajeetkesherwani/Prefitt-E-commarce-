@@ -3,19 +3,27 @@ const router = express.Router();
 
 const fileUploader = require("../../middlewares/fileUploader");
 const {
-  createProductVariants,
-} = require("../../controllers/admin/productVariantController/createProductVariant");
-const {
-  updateProductVarient,
-} = require("../../controllers/admin/productVariantController/updateProductVarient");
+  adminAuthenticate,
+} = require("../../controllers/admin/auth/adminAuthenticate");
 const {
   getAllProductVariant,
 } = require("../../controllers/admin/productVariantController/getAllProductVariant");
 const {
-  adminAuthenticate,
-} = require("../../controllers/admin/auth/adminAuthenticate");
+  createProductVariants,
+} = require("../../controllers/admin/productVariantController/createProductVariant");
+const {
+  getProductVarientById,
+} = require("../../controllers/admin/productVariantController/getProductVarientById");
+const {
+  updateProductVarient,
+} = require("../../controllers/admin/productVariantController/updateProductVarient");
+const {
+  deleteProductVarient,
+} = require("../../controllers/admin/productVariantController/deleteProductVarient");
 
-router.post("/create", createProductVariants);
-router.post("/update/:id", updateProductVarient);
-router.get("/list", getAllProductVariant);
+router.get("/list", adminAuthenticate, getAllProductVariant);
+router.post("/create", adminAuthenticate, createProductVariants);
+router.get("/getDataById/:id", adminAuthenticate, getProductVarientById);
+router.patch("/update/:id", adminAuthenticate, updateProductVarient);
+router.delete("/delete/:id", adminAuthenticate, deleteProductVarient);
 module.exports = router;

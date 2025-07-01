@@ -10,9 +10,6 @@ exports.productDetail = catchAsync(async (req, res) => {
     .populate("subCategoryId", "name")
     .populate("vendor", "shopName shopId mobile profileImg");
 
-  console.log("Product Detail:", productDetail);
-  console.log(productDetail?.serviceId?._id);
-  console.log(productDetail?.categoryId?._id);
   const reletedProducts = await Product.find({
     _id: { $ne: productId },
     serviceId: productDetail?.serviceId?._id,

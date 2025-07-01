@@ -2,37 +2,51 @@ const Vendor = require("../../../models/vendor");
 const AppError = require("../../../utils/AppError");
 const catchAsync = require("../../../utils/catchAsync");
 const createToken = require("../../../utils/createToken");
-const bcrypt = require("bcrypt");
 
 exports.verifyOtp = catchAsync(async (req, res, next) => {
-  let { mobile, otp } = req.body;
-  if (!mobile || !otp)
-    return next(new AppError("mobile or otp field are required.", 404));
+  const { mobile, otp } = req.body;
+
+  if (!mobile || !otp) {
+    return next(new AppError("Mobile and OTP fields are required.", 400));
+  }
 
   const vendor = await Vendor.findOne({ mobile });
 
-  if (!vendor)
+  if (!vendor) {
     return next(new AppError("Vendor not found with this mobile number.", 404));
+  }
 
-  if (!vendor.status)
-    return next(
-      new AppError("You are not verified. Wait for verification", 404)
-    );
-
-  if (vendor.isBlocked) return next(new AppError("You are blocked", 404));
-
+  // Check OTP validity
   if (
     !vendor.otp ||
     vendor.otp !== otp ||
     !vendor.otpExpires ||
-    new Date() > new Date(vendor.otp.otpExpires)
+    new Date() > new Date(vendor.otpExpires)
   ) {
     return next(new AppError("Invalid or expired OTP.", 401));
   }
 
-  // Optionally, clear OTP after successful verification
+  // OTP is valid → clear OTP
   vendor.otp = undefined;
+  vendor.otpExpires = undefined;
   await vendor.save();
 
-  createToken(vendor, 200, res);
+  // Check registration status
+  const isRegistered = vendor.status === true && vendor.isBlocked === false;
+
+  if (!isRegistered) {
+    // OTP is verified but vendor is not yet approved or blocked
+    return res.status(200).json({
+      success: true,
+      message:
+        "OTP verified, but vendor is not registered (not verified or blocked).",
+      isRegistered: false,
+    });
+  }
+
+  // Vendor is verified and not blocked → login
+  createToken(vendor, 200, res, {
+    message: "OTP verified and vendor is registered.",
+    isRegistered: true,
+  });
 });

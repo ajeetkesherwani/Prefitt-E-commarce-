@@ -36,7 +36,7 @@ exports.createProduct = catchAsync(async (req, res) => {
       discountedPrice,
       returnAvailable,
       exchangeAvailable,
-      variants,
+      // variants,
       shortDiscription,
       longDiscription,
       tags,
@@ -53,7 +53,7 @@ exports.createProduct = catchAsync(async (req, res) => {
       { field: discountedPrice, name: "discountedPrice" },
       { field: returnAvailable, name: "returnAvailable" },
       { field: exchangeAvailable, name: "exchangeAvailable" },
-      { field: variants, name: "variants" },
+      // { field: variants, name: "variants" },
       { field: shortDiscription, name: "Short Description" },
       { field: longDiscription, name: "Long Description" },
       { field: tags, name: "Tags" },
@@ -74,9 +74,9 @@ exports.createProduct = catchAsync(async (req, res) => {
       });
       galleryimagePaths = imagesUrls;
     }
-
-    parsedVariants = JSON.parse(variants);
-    console.log("Parsed Variants:", parsedVariants);
+    // let variants = [];
+    // parsedVariants = JSON.parse(variants);
+    // console.log("Parsed Variants:", parsedVariants);
     const product = new Product({
       vendor,
       serviceId,
@@ -90,7 +90,7 @@ exports.createProduct = catchAsync(async (req, res) => {
       discountedPrice,
       returnAvailable,
       exchangeAvailable,
-      variants: parsedVariants,
+      // variants: parsedVariants,
       shortDiscription,
       longDiscription,
       tags: tags ? JSON.parse(tags) : [],

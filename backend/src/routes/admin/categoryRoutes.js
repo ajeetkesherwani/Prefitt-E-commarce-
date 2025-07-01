@@ -11,6 +11,9 @@ const {
   createCategory,
 } = require("../../controllers/admin/categoryController/createCategory");
 const {
+  getCategoryDataById,
+} = require("../../controllers/admin/categoryController/getCategoryDataById");
+const {
   updateCategory,
 } = require("../../controllers/admin/categoryController/updateCategory");
 const {
@@ -33,6 +36,12 @@ router.post(
   createCategory
 );
 
+router.get(
+  "/getCategoryDataById/:catId",
+  adminAuthenticate,
+  getCategoryDataById
+);
+
 router.patch(
   "/update/:id",
   adminAuthenticate,
@@ -41,6 +50,7 @@ router.patch(
 );
 router.delete("/delete/:id", adminAuthenticate, deleteCategory);
 
+//============ SubCategory================
 router.get("/getSubCategory/:id", adminAuthenticate, getSubCategory);
 router.get(
   "/getCategoryByServiceId/:serviceId",

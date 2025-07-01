@@ -11,13 +11,13 @@ router.post(
   "/register",
   fileUploader("vendor", [
     { name: "profileImg", maxCount: 1 },
-    { name: "panImages", maxCount: 1 },
-    { name: "shopImages", maxCount: 1 },
+    { name: "panImages", maxCount: 2 },
+    { name: "shopImages", maxCount: 5 },
     { name: "digitalSignature", maxCount: 1 },
   ]),
   signUp
 );
-
+console.log("Route Loaded");
 router.post("/sendOtp", sendOtp);
 router.post("/verifyOtp", verifyOtp);
 

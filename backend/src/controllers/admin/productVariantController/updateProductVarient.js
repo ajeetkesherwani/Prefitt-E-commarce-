@@ -2,33 +2,20 @@ const ProductVariant = require("../../../models/productVariant");
 const AppError = require("../../../utils/AppError");
 const catchAsync = require("../../../utils/catchAsync");
 
-const validateRequiredField = (field, fieldName) => {
-  if (!field || !field.trim())
-    return new AppError(`${fieldName} is required.`, 400);
-  return null;
-};
-
 exports.updateProductVarient = catchAsync(async (req, res) => {
   let id = req.params.id;
   const { serviceId, variantTypeId, variants } = req.body;
+  console.log(serviceId, variantTypeId, variants);
 
-  const requiredFields = [
-    { field: serviceId, name: "Service Id" },
-    { field: variantTypeId, name: "variantType ID" },
-    { field: variants, name: "variants" },
-  ];
-
-  for (const { field, name } of requiredFields) {
-    const error = validateRequiredField(field, name);
-    if (error) return next(error);
-  }
+  if (!serviceId || !serviceId.trim())
+    return new AppError(`serviceId is required,`, 400);
+  if (!variantTypeId || !variantTypeId.trim())
+    return new AppError(`variantTypeId is required,`, 400);
+  if (!variants) return new AppError(`variants is required,`, 400);
 
   let prodVarient = await ProductVariant.findById(id);
   if (!prodVarient) {
-    return res.status(404).json({
-      success: false,
-      message: "Product Varient not found",
-    });
+    return new AppError("Product Varient not found", 404);
   }
 
   prodVarient.serviceId = serviceId || prodVarient.serviceId;

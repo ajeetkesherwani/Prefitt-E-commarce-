@@ -15,7 +15,7 @@ exports.adminAuthenticate = catchAsync(async (req, res, next) => {
     token = req.cookie?.xcvbexamstons;
   }
 
-  if (!token) return next(new AppError("You are not loggedin.", 404));
+  if (!token) return next(new AppError("You are not loggedin.", 401));
 
   const decoded = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
 
